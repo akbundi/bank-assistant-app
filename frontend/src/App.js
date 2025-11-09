@@ -77,12 +77,74 @@ function App() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const detectLanguage = (text) => {
+    // Check for Devanagari script (Hindi)
+    const hindiPattern = /[\u0900-\u097F]/;
+    if (hindiPattern.test(text)) {
+      return 'hi-IN';
+    }
+    // Check for Tamil script
+    const tamilPattern = /[\u0B80-\u0BFF]/;
+    if (tamilPattern.test(text)) {
+      return 'ta-IN';
+    }
+    // Check for Telugu script
+    const teluguPattern = /[\u0C00-\u0C7F]/;
+    if (teluguPattern.test(text)) {
+      return 'te-IN';
+    }
+    // Check for Bengali script
+    const bengaliPattern = /[\u0980-\u09FF]/;
+    if (bengaliPattern.test(text)) {
+      return 'bn-IN';
+    }
+    // Check for Marathi (also uses Devanagari)
+    // Check for Gujarati script
+    const gujaratiPattern = /[\u0A80-\u0AFF]/;
+    if (gujaratiPattern.test(text)) {
+      return 'gu-IN';
+    }
+    // Check for Kannada script
+    const kannadaPattern = /[\u0C80-\u0CFF]/;
+    if (kannadaPattern.test(text)) {
+      return 'kn-IN';
+    }
+    // Default to English
+    return 'en-IN';
+  };
+
   const speak = (text) => {
-    if (synthRef.current) {
+    if (synthRef.current && text) {
       synthRef.current.cancel();
+      
+      // Detect language from text
+      const detectedLang = detectLanguage(text);
+      
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-IN';
-      utterance.rate = 1.0;
+      utterance.lang = detectedLang;
+      utterance.rate = 0.95;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+      
+      // Try to find a voice for the detected language
+      const voices = synthRef.current.getVoices();
+      const languageVoice = voices.find(voice => voice.lang.startsWith(detectedLang.split('-')[0]));
+      
+      if (languageVoice) {
+        utterance.voice = languageVoice;
+        console.log(`Using voice: ${languageVoice.name} for language: ${detectedLang}`);
+      } else {
+        console.log(`No specific voice found for ${detectedLang}, using default`);
+      }
+      
+      utterance.onerror = (event) => {
+        console.error('Speech synthesis error:', event);
+      };
+      
+      utterance.onstart = () => {
+        console.log(`Speaking in ${detectedLang}: ${text.substring(0, 50)}...`);
+      };
+      
       synthRef.current.speak(utterance);
     }
   };
