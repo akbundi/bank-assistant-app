@@ -41,6 +41,19 @@ function App() {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
+    // Load speech synthesis voices
+    if ('speechSynthesis' in window) {
+      const loadVoices = () => {
+        const voices = window.speechSynthesis.getVoices();
+        console.log('Available voices:', voices.map(v => `${v.name} (${v.lang})`));
+      };
+      
+      // Load voices when they change
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices();
+    }
+
+    // Setup speech recognition
     if ('webkitSpeechRecognition' in window) {
       const recognition = new window.webkitSpeechRecognition();
       recognition.continuous = true;
