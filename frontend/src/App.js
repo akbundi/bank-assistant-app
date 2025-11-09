@@ -200,6 +200,46 @@ function App() {
     }
   };
 
+  const handleTransfer = async () => {
+    // Validation
+    if (!transferPhone.trim()) {
+      toast.error('Please enter recipient phone number');
+      return;
+    }
+    if (!transferAmount || parseFloat(transferAmount) <= 0) {
+      toast.error('Please enter a valid amount');
+      return;
+    }
+    if (parseFloat(transferAmount) > balance) {
+      toast.error('Insufficient balance');
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${API}/transfer`, {
+        to_phone: transferPhone,
+        amount: parseFloat(transferAmount),
+        user_id: user.id
+      });
+
+      if (response.data.success) {
+        toast.success(`₹${transferAmount} transferred successfully!`);
+        setBalance(response.data.new_balance);
+        setShowTransferDialog(false);
+        setTransferPhone('');
+        setTransferAmount('');
+        
+        // Refresh transactions
+        loadDashboard(user.id);
+        
+        speak(`Successfully transferred ${transferAmount} rupees to ${transferPhone}`);
+      }
+    } catch (error) {
+      const errorMsg = error.response?.data?.detail || 'Transfer failed';
+      toast.error(errorMsg);
+    }
+  };
+
   const renderAuth = () => (
     <div className="auth-container">
       <div className="auth-card">
