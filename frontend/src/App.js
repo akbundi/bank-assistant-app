@@ -421,6 +421,7 @@ function App() {
 
   return (
     <div className="App">
+      <Toaster position="top-center" richColors />
       {stage === 'dashboard' ? renderDashboard() : renderAuth()}
     </div>
   );
