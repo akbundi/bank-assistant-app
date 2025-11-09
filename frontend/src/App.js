@@ -98,12 +98,20 @@ function App() {
   const verifyOTP = async () => {
     try {
       const response = await axios.post(`${API}/auth/verify-otp`, { phone, otp });
-      if (response.data.user_exists) {
-        setStage('login');
+      console.log('OTP Verify Response:', response.data);
+      
+      if (response.data.success) {
+        toast.success('OTP verified!');
+        if (response.data.user_exists) {
+          setStage('login');
+        } else {
+          setStage('register');
+        }
       } else {
-        setStage('register');
+        toast.error('Invalid OTP');
       }
     } catch (error) {
+      console.error('OTP verification error:', error);
       toast.error('Invalid OTP');
     }
   };
