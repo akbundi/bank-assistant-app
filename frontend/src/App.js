@@ -374,6 +374,76 @@ function App() {
               <span className="balance-label">Available Balance</span>
             </div>
             <div className="balance-amount">₹{balance.toLocaleString('en-IN')}</div>
+            
+            <Dialog open={showTransferDialog} onOpenChange={setShowTransferDialog}>
+              <DialogTrigger asChild>
+                <Button 
+                  data-testid="transfer-money-btn"
+                  className="transfer-btn"
+                  onClick={() => setShowTransferDialog(true)}
+                >
+                  <ArrowRightLeft size={18} />
+                  Transfer Money
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="transfer-dialog" data-testid="transfer-dialog">
+                <DialogHeader>
+                  <DialogTitle>Transfer Money</DialogTitle>
+                  <DialogDescription>
+                    Send money securely to any registered user
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="transfer-form">
+                  <div className="form-group">
+                    <Label htmlFor="recipient-phone">Recipient Phone Number</Label>
+                    <Input
+                      id="recipient-phone"
+                      data-testid="recipient-phone-input"
+                      type="tel"
+                      placeholder="+91XXXXXXXXXX"
+                      value={transferPhone}
+                      onChange={(e) => setTransferPhone(e.target.value)}
+                      className="transfer-input"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <Label htmlFor="transfer-amount">Amount (₹)</Label>
+                    <Input
+                      id="transfer-amount"
+                      data-testid="transfer-amount-input"
+                      type="number"
+                      placeholder="0.00"
+                      value={transferAmount}
+                      onChange={(e) => setTransferAmount(e.target.value)}
+                      className="transfer-input"
+                    />
+                  </div>
+                  <div className="transfer-info">
+                    <p>Available Balance: <strong>₹{balance.toLocaleString('en-IN')}</strong></p>
+                  </div>
+                  <div className="dialog-actions">
+                    <Button
+                      data-testid="cancel-transfer-btn"
+                      variant="outline"
+                      onClick={() => {
+                        setShowTransferDialog(false);
+                        setTransferPhone('');
+                        setTransferAmount('');
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      data-testid="confirm-transfer-btn"
+                      onClick={handleTransfer}
+                      className="confirm-transfer-btn"
+                    >
+                      Transfer
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </Card>
 
           <Card className="transactions-card" data-testid="transactions-card">
