@@ -1,11 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import '@/App.css';
 import axios from 'axios';
-import { Mic, MicOff, Send, Phone, Lock, User, TrendingUp, ArrowUpRight, ArrowDownLeft, Clock, IndianRupee } from 'lucide-react';
+import { Mic, MicOff, Send, Phone, Lock, User, TrendingUp, ArrowUpRight, ArrowDownLeft, Clock, IndianRupee, ArrowRightLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { toast, Toaster } from 'sonner';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
