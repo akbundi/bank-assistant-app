@@ -505,6 +505,83 @@ h1, h2, h3 {
   box-shadow: 0 6px 16px rgba(14, 165, 233, 0.3);
 }
 
+/* Transfer Dialog */
+.transfer-dialog {
+  border-radius: 20px;
+}
+
+.transfer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0c4a6e;
+}
+
+.transfer-input {
+  height: 48px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  font-size: 1rem;
+}
+
+.transfer-input:focus {
+  border-color: #0ea5e9;
+  outline: none;
+}
+
+.transfer-info {
+  padding: 1rem;
+  background: #f1f5f9;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.transfer-info p {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.transfer-info strong {
+  color: #0c4a6e;
+  font-weight: 700;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.dialog-actions button {
+  flex: 1;
+  height: 48px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.confirm-transfer-btn {
+  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  color: white;
+}
+
+.confirm-transfer-btn:hover {
+  background: linear-gradient(135deg, #0284c7, #0891b2);
+  box-shadow: 0 6px 16px rgba(14, 165, 233, 0.3);
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
   .dashboard-content {
