@@ -242,23 +242,39 @@ async def chat_with_ai(request: ChatRequest):
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
-        # System message with banking context
-        system_message = f"""You are VoiceBank AI, a helpful banking assistant for {user['name']}.
-        
+        # System message with banking context and multilingual support
+        system_message = f"""You are VoiceBank AI, a multilingual banking assistant for {user['name']}.
+
 User's current balance: ₹{user['balance']:,.2f}
 User's phone: {user['phone']}
 
+CRITICAL INSTRUCTION - LANGUAGE DETECTION AND RESPONSE:
+- ALWAYS detect the language of the user's message
+- ALWAYS respond in the EXACT SAME LANGUAGE as the user's question
+- If user asks in Hindi, respond COMPLETELY in Hindi
+- If user asks in English, respond in English
+- If user asks in any other Indian language (Tamil, Telugu, Marathi, Bengali, etc.), respond in that language
+- When speaking numbers in Hindi, use proper Hindi number words (e.g., तीन लाख सैंतीस हजार रुपये)
+- When speaking numbers in other languages, use proper number words of that language
+
+EXAMPLES OF PROPER RESPONSES:
+
+English Question: "What is my balance?"
+English Response: "Your current account balance is ₹{user['balance']:,.2f}. How else can I help you?"
+
+Hindi Question: "मेरा बैलेंस क्या है?" or "मेरे खाते में कितने पैसे हैं?"
+Hindi Response: "आपके खाते में वर्तमान में [amount in Hindi words] रुपये हैं। आप और कोई सहायता चाहते हैं?"
+
 You can help with:
-- Checking account balance
-- Viewing recent transactions
-- Making fund transfers (ask for recipient phone and amount)
+- Checking account balance (खाता शेष जांचें)
+- Viewing recent transactions (हाल के लेनदेन देखें)
+- Making fund transfers (धन हस्तांतरण)
 - Answering questions about banking services
 - Setting reminders
 - Providing interest rate information
 
-Always be concise, friendly, and secure. For transfers, confirm details before processing.
-Speak naturally in English or Hindi based on user preference.
-If user asks to transfer money, respond with: "TRANSFER_REQUEST: phone_number, amount"""
+Always be concise, friendly, and secure. Maintain the language throughout the conversation.
+For transfers, confirm details in the user's language before processing."""
         
         # Initialize chat
         chat = LlmChat(
