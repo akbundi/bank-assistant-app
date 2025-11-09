@@ -33,6 +33,9 @@ function App() {
   const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const [sessionId] = useState(() => 'session_' + Date.now());
+  const [showTransferDialog, setShowTransferDialog] = useState(false);
+  const [transferPhone, setTransferPhone] = useState('');
+  const [transferAmount, setTransferAmount] = useState('');
   const recognitionRef = useRef(null);
   const synthRef = useRef(window.speechSynthesis);
   const messagesEndRef = useRef(null);
